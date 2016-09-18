@@ -1,4 +1,4 @@
-package com.example.administrator.donnottouchwithe;
+package com.example.administrator.donnottouchwithe.activity;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,10 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+
+import com.example.administrator.donnottouchwithe.activity.MainActivity;
 
 /**
  * Created by Administrator on 2016/9/9.
@@ -15,14 +19,16 @@ public class Fangkuai extends View{
 
     int canclick = 2;//0代表可以点击；1代表不能点击并且是黑块；2代表不能点击并且是白块
     int i = 2;//0代表未点击，1代表已点击，2代表白块
+
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         DisplayMetrics metrics = new DisplayMetrics();
         getDisplay().getMetrics(metrics);
         int layoutwidth = metrics.widthPixels/3;
-        int layoutheight = (metrics.heightPixels-30-30)/4;
-        setMeasuredDimension(layoutwidth,layoutheight);
+        int layoutheight = (metrics.heightPixels-30-6)/4;
+        setMeasuredDimension(layoutwidth, layoutheight);
     }
 
     public void setI(int i) {
@@ -36,10 +42,6 @@ public class Fangkuai extends View{
 
     public void setCanclick(int canclick) {
         this.canclick = canclick;
-    }
-
-    public int getCanclick() {
-        return canclick;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class Fangkuai extends View{
         }
         Paint paint = new Paint();
         paint.setColor(Color.parseColor(paintcolor));
-        canvas.drawRect(5, 0, getWidth(), getHeight()-5, paint);
+        canvas.drawRect(1, 1, getWidth(), getHeight()-1, paint);
     }
 
 
@@ -77,6 +79,11 @@ public class Fangkuai extends View{
                     } else {
                         MainActivity.handler.sendEmptyMessage(2);
                     }
+                }else if (canclick == 3){
+                    if (i == 0) {
+                        setI(1);
+                        JindianActivity.handler.sendEmptyMessage(0);
+                    }
                 }
             }
         });
@@ -89,5 +96,10 @@ public class Fangkuai extends View{
     public Fangkuai(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+    }
+
+    @Override
+    protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+        super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
     }
 }

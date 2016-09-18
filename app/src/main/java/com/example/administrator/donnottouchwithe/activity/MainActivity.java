@@ -1,4 +1,4 @@
-package com.example.administrator.donnottouchwithe;
+package com.example.administrator.donnottouchwithe.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.administrator.donnottouchwithe.sql.MySqlite;
+import com.example.administrator.donnottouchwithe.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -88,10 +91,7 @@ public class MainActivity extends AppCompatActivity {
             ll[i] = new LinearLayout(this);
             ll[i].setOrientation(LinearLayout.HORIZONTAL);
             ll_0.addView(ll[i]);
-        }
-        //将方块绘制到布局文件中
-        ll_0 = (LinearLayout) findViewById(R.id.ll);
-        for (int i = 0; i< lllenth;i++){
+            //将方块绘制到布局文件中
             for (int j =0; j< fklenth; j++){
                 fk[i][j] = new Fangkuai(this);
                 ll[i].addView(fk[i][j]);
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             int randnum = (int) (Math.random()*3);
             fk[i][randnum].setI(0);
         }
+
         //将最后一行的白块设置为可点击状态
         for (int j = 0; j < fklenth; j++) {
             if (fk[3][j].getI() == 0){
@@ -135,8 +136,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         //显性跳转到另外一个布局文件中
                         Intent it = new Intent();
-                        it.setClass(MainActivity.this,com.example.administrator.donnottouchwithe.Main2Activity.class);
+                        it.setClass(MainActivity.this,Main2Activity.class);
                         //将该局得分传递过去
+                        it.putExtra("stat",1);
                         it.putExtra("df",df+"");
                         it.putExtra("gf",gf+"");
                         startActivity(it);
@@ -150,7 +152,13 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onStop() {
+    public void onBackPressed() {
+        startActivity(new Intent(this,HomeActivity.class));
+        cancel();
+        finish();
+    }
+
+    public void  cancel(){
         if (timer2!=null){
             timer2.cancel();
         }
@@ -161,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
         if (db!=null){
             db.close();
         }
-        super.onStop();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
