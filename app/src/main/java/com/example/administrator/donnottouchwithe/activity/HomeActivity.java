@@ -28,14 +28,14 @@ public class HomeActivity extends AppCompatActivity {
     public void out(View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("退出");
-        builder.setMessage("确定要退出？");
-        builder.setPositiveButton("quit", new DialogInterface.OnClickListener() {
+        builder.setMessage("确定退出");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         });
-        builder.setNegativeButton("cancel",null);
+        builder.setNegativeButton("取消",null);
         builder.show();
     }
 

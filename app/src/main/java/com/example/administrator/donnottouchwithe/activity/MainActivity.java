@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private static Fangkuai[][] fk = new Fangkuai[lllenth][fklenth];
     private static TextView tv_df;
     private TextView tv_time;
-    private Timer timer1 = new Timer();
-    private Timer timer2 = new Timer();
+    private Timer timer1;
+    private Timer timer2;
 
     static Handler handler = new Handler(){
         @Override
@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        timer1 = new Timer();
+        timer2 = new Timer();
 
         //应用创建时，创建数据库
         MySqlite ms = new MySqlite(this);
@@ -153,8 +156,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this,HomeActivity.class));
+        if (timer1!=null){
+            timer1.cancel();
+        }
         cancel();
+        startActivity(new Intent(this,HomeActivity.class));
         finish();
     }
 
@@ -172,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onDestroy() {
+        cancel();
         super.onDestroy();
     }
 }

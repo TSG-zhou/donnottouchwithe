@@ -23,14 +23,14 @@ public class JindianActivity extends AppCompatActivity {
     private static int lllenth = 4;
     private LinearLayout[] ll = new LinearLayout[lllenth];
     private static int fklenth = 3;
-    static int js = 60;
+    private static int js = 60;
     private static Fangkuai[][] fk = new Fangkuai[lllenth][fklenth];
-    private Timer timer1 = new Timer();
-    private Timer timer2 = new Timer();
-    static int sjs = 0;
-    static double sjms = 0;
-    int sjsjl;
-    double sjmsjl;
+    private Timer timer1;
+    private Timer timer2;
+    private static int sjs = 0;
+    private static double sjms = 0;
+    private int sjsjl;
+    private double sjmsjl;
 
     private SQLiteDatabase db;
 
@@ -75,6 +75,9 @@ public class JindianActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jindian);
+
+        timer1 = new Timer();
+        timer2 = new Timer();
 
         MySqlite ms = new MySqlite(this);
         db = ms.getWritableDatabase();
@@ -161,12 +164,19 @@ public class JindianActivity extends AppCompatActivity {
         js = 60;
         //页面销毁时，将游戏开始状态设置为false
         flag = false;
+        if (db!=null){
+            db.close();
+        }
     }
 
     @Override
     public void onBackPressed() {
+        if (timer1 != null) {
+            timer1.cancel();
+        }
         startActivity(new Intent(this,HomeActivity.class));
         cancel();
+        finish();
     }
 
     @Override
